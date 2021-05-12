@@ -28,7 +28,7 @@ interface ILoginUserSuccess {
 
 interface ErrorResponse {
   success: false
-  error_code: 'user_not_confirmed' | 'unhandled'
+  error_code: 'user_not_confirmed' | 'unhandled_error'
   message: string
 }
 
@@ -73,17 +73,23 @@ export class AuthService {
           })
         },
         onFailure: (err) => {
-          if (err.code == 'UserNotConfirmedException') {
-            return resolve(<ErrorResponse>{
-              success: false,
-              error_code: 'user_not_confirmed',
-              message: err.message,
-            })
+          let error_code = 'unhandled'
+
+          switch (err.code) {
+            case 'NotAuthorizedException':
+              error_code = 'incorrect_credentials'
+              break
+            case 'UserNotConfirmedException':
+              error_code = 'user_not_confirmed'
+              break
+            default:
+              console.log(JSON.stringify(err))
+              break
           }
 
           return resolve(<ErrorResponse>{
             success: false,
-            error_code: 'unhandled',
+            error_code,
             message: err.message,
           })
         },
@@ -156,6 +162,43 @@ export class AuthService {
           })
         },
       )
+    })
+  }
+
+  async confirmUser({ username, code }) {
+    return new Promise((resolve) => {
+      const userData = {
+        Username: username,
+        Pool: this.userPool,
+      }
+
+      const cognitoUser = new CognitoUser(userData)
+
+      cognitoUser.confirmRegistration(code, true, (err) => {
+        if (err) {
+          let error_code = 'unhandled'
+
+          switch (err.code) {
+            case 'ExpiredCodeException':
+              error_code = 'code_expired'
+              break
+            case 'CodeMismatchException':
+              error_code = 'code_mismatch'
+              break
+            default:
+              console.log(JSON.stringify(err))
+              break
+          }
+
+          return resolve(<ErrorResponse>{
+            success: false,
+            error_code,
+            message: err.message,
+          })
+        }
+
+        resolve({ success: true, message: 'User confirmed successfully.' })
+      })
     })
   }
 

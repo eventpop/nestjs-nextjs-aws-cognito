@@ -8,25 +8,32 @@ export class AuthController {
   @Post('signup')
   async signUp(
     @Body()
-    authenticateRequest: {
+    signUpRequest: {
       email: string
       username: string
       password: string
     },
   ) {
     try {
-      return await this.authService.signUpUser(authenticateRequest)
+      return await this.authService.signUpUser(signUpRequest)
     } catch (e) {
       throw new BadRequestException(e.message)
     }
   }
 
   @Post('login')
-  async login(
-    @Body() authenticateRequest: { username: string; password: string },
-  ) {
+  async login(@Body() loginRequest: { username: string; password: string }) {
     try {
-      return await this.authService.authenticateUser(authenticateRequest)
+      return await this.authService.authenticateUser(loginRequest)
+    } catch (e) {
+      throw new BadRequestException(e.message)
+    }
+  }
+
+  @Post('confirm')
+  async confirm(@Body() confirmRequest: { username: string; code: string }) {
+    try {
+      return await this.authService.confirmUser(confirmRequest)
     } catch (e) {
       throw new BadRequestException(e.message)
     }
