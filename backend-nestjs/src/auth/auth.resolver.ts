@@ -31,6 +31,18 @@ class LoginInput {
   password: string
 }
 
+@InputType()
+class SignUpInput {
+  @Field(() => String, { description: 'Email' })
+  email: string
+
+  @Field(() => String, { description: 'Username' })
+  username: string
+
+  @Field(() => String, { description: 'Password' })
+  password: string
+}
+
 @ObjectType()
 class ILogin {
   @Field()
@@ -44,6 +56,12 @@ class ILogin {
 
   @Field()
   refresh_token: string
+}
+
+@ObjectType()
+class ISignUp {
+  @Field()
+  username: string
 }
 
 @ObjectType()
@@ -65,6 +83,19 @@ export const ReqGql = createParamDecorator(
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
+
+  @Mutation(() => ISignUp)
+  async signUp(@Args('signUpInput') signUpInput: SignUpInput) {
+    const result = await this.authService.signUpUser(signUpInput).catch((e) => {
+      throw new AuthenticationError(e.message)
+    })
+
+    if (!result.success) {
+      throw new AuthenticationError(result.message)
+    }
+
+    return result.data
+  }
 
   @Mutation(() => ILogin)
   async login(

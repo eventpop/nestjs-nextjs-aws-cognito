@@ -12,7 +12,7 @@ import Cognito, {
 export type ISignUpUserResponse = ISignUpUserSuccess | ErrorResponse
 export type ILoginUserResponse = ILoginUserSuccess | ErrorResponse
 
-interface ISignUpUserSuccess {
+export interface ISignUpUserSuccess {
   success: true
   message: string
   data: {
