@@ -24,7 +24,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginRequest: { username: string; password: string }) {
     try {
-      return await this.authService.authenticateUser(loginRequest)
+      return await this.authService.loginUser(loginRequest)
     } catch (e) {
       throw new BadRequestException(e.message)
     }

@@ -28,7 +28,7 @@ interface ILoginUserSuccess {
 
 interface ErrorResponse {
   success: false
-  error_code: 'user_not_confirmed' | 'unhandled_error'
+  error_code: 'user_not_confirmed' | 'new_password_required' | 'unhandled_error'
   message: string
 }
 
@@ -46,7 +46,7 @@ export class AuthService {
     })
   }
 
-  authenticateUser(user: {
+  loginUser(user: {
     username: string
     password: string
   }): Promise<ILoginUserResponse> {
@@ -93,29 +93,36 @@ export class AuthService {
             message: err.message,
           })
         },
-        newPasswordRequired: (userAttributes) => {
+        newPasswordRequired: (_userAttributes) => {
+          return resolve(<ErrorResponse>{
+            success: false,
+            error_code: 'new_password_required',
+            message: 'New password required.',
+          })
+
           // Auto-complete new password challenge
-          const sessionUserAttributes = userAttributes
+          // TODO: Move to other API endpoint
+          // const sessionUserAttributes = userAttributes
 
-          delete sessionUserAttributes.email_verified
-          delete sessionUserAttributes.phone_number_verified
+          // delete sessionUserAttributes.email_verified
+          // delete sessionUserAttributes.phone_number_verified
 
-          newUser.completeNewPasswordChallenge(
-            password,
-            sessionUserAttributes,
-            {
-              onSuccess: (result) => {
-                resolve(<ILoginUserSuccess>{
-                  success: true,
-                  message: 'Logged In.',
-                  data: result,
-                })
-              },
-              onFailure: (err) => {
-                reject(err)
-              },
-            },
-          )
+          // newUser.completeNewPasswordChallenge(
+          //   password,
+          //   sessionUserAttributes,
+          //   {
+          //     onSuccess: (result) => {
+          //       resolve(<ILoginUserSuccess>{
+          //         success: true,
+          //         message: 'Logged In.',
+          //         data: result,
+          //       })
+          //     },
+          //     onFailure: (err) => {
+          //       reject(err)
+          //     },
+          //   },
+          // )
         },
       })
     })
