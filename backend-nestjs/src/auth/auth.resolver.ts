@@ -138,12 +138,4 @@ export class AuthResolver {
       refresh_token: result.getRefreshToken().getToken(),
     }
   }
-
-  @Query(() => IAuthCheck)
-  @UseGuards(GqlAuthGuard)
-  async check() {
-    return {
-      loggedIn: true,
-    }
-  }
 }
