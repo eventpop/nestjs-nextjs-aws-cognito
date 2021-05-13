@@ -6,10 +6,11 @@ import { AuthConfig } from './auth.config'
 import { JwtStrategy } from './jwt.strategy'
 // import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
   controllers: [AuthController],
-  providers: [AuthConfig, JwtStrategy, AuthService],
+  providers: [AuthConfig, JwtStrategy, AuthService, AuthResolver],
 })
 export class AuthModule {}
