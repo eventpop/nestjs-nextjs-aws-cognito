@@ -64,12 +64,6 @@ class ISignUp {
   username: string
 }
 
-@ObjectType()
-class IAuthCheck {
-  @Field()
-  loggedIn: boolean
-}
-
 export const ResGql = createParamDecorator(
   (_data: unknown, context: ExecutionContext): Response =>
     GqlExecutionContext.create(context).getContext().res,
@@ -109,9 +103,10 @@ export class AuthResolver {
     if (!result.success) {
       throw new AuthenticationError(result.message)
     }
-    // res.cookie('refresh_token', result.data.getRefreshToken().getToken(), {
-    //   httpOnly: true,
-    // })
+
+    res.cookie('refresh_token', result.data.getRefreshToken().getToken(), {
+      httpOnly: true,
+    })
 
     return {
       email: result.data.getIdToken().payload.email,
