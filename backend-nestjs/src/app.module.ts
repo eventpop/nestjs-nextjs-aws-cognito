@@ -12,6 +12,7 @@ const GraphQL = GraphQLModule.forRoot({
   autoSchemaFile: true,
   debug: nodeEnv == 'development',
   playground: nodeEnv == 'development',
+  context: ({ req, res }) => ({ req, res }), // Required for cookies
 })
 
 @Module({
