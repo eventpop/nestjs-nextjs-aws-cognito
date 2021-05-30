@@ -9,7 +9,7 @@ import { UserModule } from './user/user.module'
 const nodeEnv = process.env.NODE_ENV || 'development'
 
 const GraphQL = GraphQLModule.forRoot({
-  autoSchemaFile: true,
+  autoSchemaFile: 'schema.graphql',
   debug: nodeEnv == 'development',
   playground: nodeEnv == 'development',
   context: ({ req, res }) => ({ req, res }), // Required for cookies

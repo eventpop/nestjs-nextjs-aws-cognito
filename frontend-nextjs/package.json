@@ -26,6 +26,12 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.3.17",
+    "apollo-link-token-refresh": "^0.3.2",
+    "cross-fetch": "^3.1.4",
+    "graphql": "^15.5.0",
+    "http-proxy-middleware": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
     "next": "latest",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

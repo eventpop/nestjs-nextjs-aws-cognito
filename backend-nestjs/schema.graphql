@@ -1,0 +1,49 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ILogin {
+  email: String!
+  username: String!
+  access_token: String!
+  refresh_token: String!
+}
+
+type ISignUp {
+  username: String!
+}
+
+type UserInfo {
+  id: String!
+  email: String!
+  username: String!
+}
+
+type Query {
+  me: UserInfo!
+}
+
+type Mutation {
+  signUp(signUpInput: SignUpInput!): ISignUp!
+  login(loginInput: LoginInput!): ILogin!
+  refresh: ILogin!
+}
+
+input SignUpInput {
+  """Email"""
+  email: String!
+
+  """Username"""
+  username: String!
+
+  """Password"""
+  password: String!
+}
+
+input LoginInput {
+  """Username"""
+  username: String!
+
+  """Password"""
+  password: String!
+}
