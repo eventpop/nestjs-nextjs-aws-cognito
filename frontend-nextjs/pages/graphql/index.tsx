@@ -3,7 +3,7 @@ import { useAuth } from '@src/utils/auth'
 import withApollo from '@src/utils/with-apollo'
 import { withAuth } from '@src/utils/with-auth'
 
-export const Index = (): JSX.Element => {
+export const ProtectedPage = (): JSX.Element => {
   const { authState, isLoading, signOut } = useAuth()
 
   if (isLoading) {
@@ -12,11 +12,11 @@ export const Index = (): JSX.Element => {
 
   return (
     <>
-      <p>Authenticated</p>
+      <h1>Protected Page</h1>
       <p>Auth State: {JSON.stringify(authState)}</p>
       <button onClick={signOut} disabled={isLoading}>Sign Out</button>
     </>
   )
 }
 
-export default withAuth(withApollo(Index))
+export default withAuth(withApollo(ProtectedPage))
